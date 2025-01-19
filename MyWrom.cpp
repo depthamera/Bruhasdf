@@ -33,8 +33,62 @@ void initialize() {
     }
 }
 
+int move(int origin, Direction dir) {
+    int result = origin;
+
+    switch(dir) {
+        case Left:
+            result++;
+            break;
+        case Right:
+            result--;
+            break;
+        case Up:
+            result += GAME_SIZE;
+            break;
+        case Down:
+            result -= GAME_SIZE;
+            break;        
+    }
+
+    return result;
+}
+
+bool is_valid_move(int origin, int target, Direction dir) {
+    bool result = false;
+
+    switch (dir)
+    {
+        case Left:
+        case Right:
+            result = (origin%GAME_SIZE == target%GAME_SIZE);
+            break;
+        case Up:
+        case Down:
+            result = (target >= 0 && target < MAP_SIZE);
+            break;
+    }
+
+    return result;
+}
+
 int move_head(Direction dir) {
-    
+    int target = move(snake_data[0], dir);
+
+    if(!is_valid_move(snake_data[0], target, dir)) {
+        return -1;
+    }
+
+    return 0;
+}
+
+void track_head(int index, int parent_pos) {
+    if(index == snake_size) return;
+
+    int prev_pos = snake_data[index];
+    snake_data[index] = parent_pos;
+
+    track_head(index+1, prev_pos);   
 }
 
 void build_visual_map() {

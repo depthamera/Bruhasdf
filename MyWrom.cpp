@@ -1,10 +1,14 @@
 #include <iostream>
 #include <string>
 #include <random>
+#include <conio.h>
 #include <windows.h>
 
 constexpr int GAME_SIZE = 10;
 constexpr int MAP_SIZE = GAME_SIZE * GAME_SIZE;
+constexpr int GAME_DELAY = 15;
+
+HANDLE handle;
 
 enum Object {
     Empty = 0,
@@ -27,7 +31,7 @@ std::string visual_map(MAP_SIZE + GAME_SIZE, '\n');
 
 int snake_size = 1;
 
-Direction current_dir;
+Direction current_dir = Right;
 
 int apple_pos = 0;
 
@@ -37,6 +41,14 @@ std::mt19937 random_generator;
 std::vector<int> available_pos;
 
 void initialize() {
+    handle = GetStdHandle(STD_OUTPUT_HANDLE);
+
+    CONSOLE_CURSOR_INFO cursor_info = {0, };
+	cursor_info.dwSize = 1;
+	cursor_info.bVisible = false;
+    SetConsoleCursorInfo(handle, &cursor_info);
+
+
     for(int i=GAME_SIZE; i<MAP_SIZE; i+=GAME_SIZE) {
         visual_map[i-1] = 'd';
         visual_map[i] = '\n';
@@ -50,16 +62,16 @@ int move(int origin, Direction dir) {
 
     switch(dir) {
         case Left:
-            result++;
-            break;
-        case Right:
             result--;
             break;
+        case Right:
+            result++;
+            break;
         case Up:
-            result += GAME_SIZE;
+            result -= GAME_SIZE;
             break;
         case Down:
-            result -= GAME_SIZE;
+            result += GAME_SIZE;
             break;        
     }
 
@@ -151,18 +163,55 @@ void build_visual_map() {
     }
 }
 
-void update() {
-    move_head(current_dir);
-    check_apple();
-    track_head(1, snake_pos[0]);
-    build_map();
-    build_visual_map();
+void print_screen() {
+    SetConsoleCursorPosition(handle, {0, 0});
+    std::cout << visual_map;
 }
 
+void update() {
+    int prev_head_pos = snake_pos[0];
+    move_head(current_dir);
+    check_apple();
+    track_head(1, prev_head_pos);
+    build_map();
+    build_visual_map();
+    print_screen();
+}
+
+void start_loop() {
+    int count = 0;
+    int key = 0;
+
+    while(true) {
+        count++;
+        
+        if(_kbhit() && getch() == 224) {
+            switch(key = _getch()) {
+                case 75:
+                    current_dir = Left;
+                    break;
+                case 77:
+                    current_dir = Right;
+                    break;
+                case 72:
+                    current_dir = Up;
+                    break;
+                case 80:
+                    current_dir = Down;
+                    break;
+            }
+        }
+
+        if(count == 15) {
+            update();
+            count = 0;
+        }
+
+        Sleep(GAME_DELAY);
+    }
+}
 int main() {
     initialize();
-    update();
-    std::cout << visual_map;
-    system("pause");
+    start_loop();
     return 0;
 }

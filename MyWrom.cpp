@@ -32,8 +32,10 @@ std::string visual_map(MAP_SIZE + GAME_SIZE, '\n');
 int snake_size = 1;
 
 Direction current_dir = Right;
+Direction next_dir = Right;
 
-int apple_pos = 0;
+int apple_pos = -1;
+bool is_apple_generated = false;
 
 std::random_device random_device;
 std::mt19937 random_generator;
@@ -86,6 +88,7 @@ bool is_valid_move(int origin, int target, Direction dir) {
         case Left:
         case Right:
             result = (origin/GAME_SIZE == target/GAME_SIZE);
+            result &= (target >= 0 && target < MAP_SIZE);
             break;
         case Up:
         case Down:
@@ -135,13 +138,14 @@ void generate_apple() {
     }
 
     apple_pos = get_random_from_vector(available_pos);
+    is_apple_generated = true;
 }
 
 void check_apple() {
     if(snake_pos[0] == apple_pos) {
+        is_apple_generated = false;
         map[apple_pos] = Empty;
         snake_size++;
-        generate_apple();
     }
 }
 
@@ -153,8 +157,6 @@ void build_map() {
     for(int i=0; i<snake_size; i++) {
         map[snake_pos[i]] = Snake;
     }
-
-    map[apple_pos] = Apple;
 }
 
 void build_visual_map() {
@@ -170,12 +172,18 @@ void print_screen() {
 
 void update() {
     int prev_head_pos = snake_pos[0];
+    current_dir = next_dir;
     move_head(current_dir);
     check_apple();
     track_head(1, prev_head_pos);
     build_map();
+    if(!is_apple_generated) {
+        generate_apple();
+    }
+    map[apple_pos] = Apple;
     build_visual_map();
     print_screen();
+    std::cout << snake_pos[0];
 }
 
 void start_loop() {
@@ -188,16 +196,20 @@ void start_loop() {
         if(_kbhit() && getch() == 224) {
             switch(key = _getch()) {
                 case 75:
-                    current_dir = Left;
+                    if(current_dir == Right) break;
+                    next_dir = Left;
                     break;
                 case 77:
-                    current_dir = Right;
+                    if(current_dir == Left) break;
+                    next_dir = Right;
                     break;
                 case 72:
-                    current_dir = Up;
+                    if(current_dir == Down) break;
+                    next_dir = Up;
                     break;
                 case 80:
-                    current_dir = Down;
+                    if(current_dir == Up) break;
+                    next_dir = Down;
                     break;
             }
         }

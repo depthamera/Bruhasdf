@@ -6,7 +6,7 @@
 
 constexpr int GAME_SIZE = 10;
 constexpr int MAP_SIZE = GAME_SIZE * GAME_SIZE;
-constexpr int GAME_DELAY = 15;
+constexpr int GAME_DELAY = 30;
 
 HANDLE handle;
 
@@ -41,6 +41,8 @@ std::random_device random_device;
 std::mt19937 random_generator;
 
 std::vector<int> available_pos;
+
+int is_running = 0;
 
 void initialize() {
     handle = GetStdHandle(STD_OUTPUT_HANDLE);
@@ -170,12 +172,28 @@ void print_screen() {
     std::cout << visual_map;
 }
 
+int collison_check() {
+    for(int i=1; i<snake_size; i++) {
+        
+        if(snake_pos[0] == snake_pos[i]) {
+            is_running = 0;
+            return 1;
+        }
+    }
+
+    return 0;
+}
+
 void update() {
     int prev_head_pos = snake_pos[0];
     current_dir = next_dir;
-    move_head(current_dir);
+    if(move_head(current_dir)) {
+        is_running = 0;
+        return;
+    }
     check_apple();
     track_head(1, prev_head_pos);
+    if(collison_check()) return;
     build_map();
     if(!is_apple_generated) {
         generate_apple();
@@ -183,7 +201,6 @@ void update() {
     map[apple_pos] = Apple;
     build_visual_map();
     print_screen();
-    std::cout << snake_pos[0];
 }
 
 void start_loop() {
@@ -191,6 +208,7 @@ void start_loop() {
     int key = 0;
 
     while(true) {
+        if(!is_running) return;
         count++;
         
         if(_kbhit() && getch() == 224) {
@@ -222,8 +240,15 @@ void start_loop() {
         Sleep(GAME_DELAY);
     }
 }
-int main() {
+
+void start_game() {
+    is_running = 1;
     initialize();
     start_loop();
+}
+int main() {
+    start_game();
+    std::cout << "GAME EXIT";
+    system("pause");
     return 0;
 }

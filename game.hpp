@@ -15,14 +15,16 @@ class Game {
 
     std::array<int, MAP_SIZE> snake_pos;
     int apple_pos = -1;
+    bool is_apple_exist = false;
 
-    std::array<int, MAP_SIZE> map;
+    std::array<Object, MAP_SIZE> map(Object::Empty);
 
     std::random_device random_device;
-    std::mt19937 random_generator;
+    std::mt19937 random_generator = std::mt19937(random_device());
 
 public:
     Game();
+    void initialize();
     void update();
     void generate_apple();
 };

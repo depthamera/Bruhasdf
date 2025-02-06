@@ -1,6 +1,8 @@
 #pragma once
+#include <vector>
 #include <array>
 #include <random>
+#include "utils.hpp"
 
 enum class Direction { Up, Down, Left, Right };
 enum class Object { Empty, Snake, Apple };
@@ -13,14 +15,14 @@ class Game {
     Direction snake_current_dir = Direction::Right;
     Direction snake_next_dir = Direction::Right;
 
-    std::array<int, MAP_SIZE> snake_pos;
+    std::vector<int> snake_pos;
     int apple_pos = -1;
     bool is_apple_exist = false;
 
-    std::array<Object, MAP_SIZE> map(Object::Empty);
+    std::array<Object, MAP_SIZE> map;
 
     std::random_device random_device;
-    std::mt19937 random_generator = std::mt19937(random_device());
+    std::mt19937 random_generator;
 
 public:
     Game();

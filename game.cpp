@@ -1,11 +1,8 @@
 #include "game.hpp"
+#include "utils.hpp"
 
-Game::Game() {
-
-}
-
-void Game::initialize() {
-    random_generator = std::mt19937(random_device());
+Game::Game(): random_generator(random_device()) {
+    map = utils::make_array<Object, MAP_SIZE>(Object::Empty);
 }
 
 void Game::update() {
@@ -13,6 +10,8 @@ void Game::update() {
 }
 
 void Game::generate_apple() {
+    int random_pos = -1;
 
+    
 }
 

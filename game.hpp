@@ -4,7 +4,7 @@
 #include <random>
 #include "utils.hpp"
 
-enum class Direction { Up, Down, Left, Right };
+enum class Direction { None, Up, Down, Left, Right };
 enum class Object { Empty, Snake, Apple };
 
 class Game {
@@ -12,8 +12,7 @@ class Game {
     static constexpr int MAP_SIZE = GAME_SIZE * GAME_SIZE;
 
     int snake_length = 1;
-    Direction snake_current_dir = Direction::Right;
-    Direction snake_next_dir = Direction::Right;
+    Direction snake_dir = Direction::Right;
 
     std::vector<int> snake_pos;
     int apple_pos = -1;
@@ -29,4 +28,5 @@ public:
     void initialize();
     void update();
     void generate_apple();
+    void try_set_snake_direction(Direction dir);
 };

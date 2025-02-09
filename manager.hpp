@@ -5,9 +5,9 @@
 #include "input.hpp"
 #include "renderer.hpp"
 
+
 class Manager {
     bool is_game_running = false;
-
     static constexpr int GAME_DELAY = 30;
     int tick_counter = 0;
 

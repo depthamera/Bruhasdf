@@ -7,9 +7,10 @@
 enum class Direction { None, Up, Down, Left, Right };
 enum class Object { Empty, Snake, Apple };
 
+inline constexpr unsigned int GAME_SIZE = 10;
+inline constexpr unsigned int MAP_SIZE = GAME_SIZE * GAME_SIZE;
+
 class Game {
-    static constexpr int GAME_SIZE = 10;
-    static constexpr int MAP_SIZE = GAME_SIZE * GAME_SIZE;
 
     int snake_length = 1;
     Direction snake_dir = Direction::Right;

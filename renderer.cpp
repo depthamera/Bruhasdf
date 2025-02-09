@@ -11,11 +11,8 @@ void Renderer::initialize() {
 	cursor_info.bVisible = false;
     SetConsoleCursorInfo(handle, &cursor_info);
 
-    for(int i=0; i<Game::MAP_SIZE; i++) {
-        
+    buffer = std::string(" ", BUFFER_SIZE);
+    for(int i=GAME_SIZE; i<BUFFER_SIZE; i+=GAME_SIZE) {
+        buffer[i] = '\n';
     }
-}
-
-void asdf() {
-    std::cout
 }

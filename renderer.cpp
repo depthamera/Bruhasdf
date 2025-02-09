@@ -10,4 +10,12 @@ void Renderer::initialize() {
 	cursor_info.dwSize = 1;
 	cursor_info.bVisible = false;
     SetConsoleCursorInfo(handle, &cursor_info);
+
+    for(int i=0; i<Game::MAP_SIZE; i++) {
+        
+    }
+}
+
+void asdf() {
+    std::cout
 }

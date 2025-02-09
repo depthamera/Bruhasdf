@@ -9,15 +9,21 @@ void Manager::start_game() {
     loop();
 }
 
-void Manager::loop() {
-    currnet_input = input::get_input_arrow();
+const std::unordered_map<Key, Direction> Manager::key_dir_map = {
+    {Key::Up, Direction::Up},
+    {Key::Down, Direction::Down},
+    {Key::Left, Direction::Left},
+    {Key::Right, Direction::Right}
+};
 
+void Manager::loop() {
     while(is_game_running) {
-        
+        current_input = input::get_input_arrow();
 
         if(++tick_counter == GAME_DELAY) {
-            
+            game.try_set_snake_direction(key_dir_map.at(current_input));
             game.update();
+            
             tick_counter = 0;
         }
     }

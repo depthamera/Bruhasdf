@@ -16,3 +16,24 @@ void Renderer::initialize() {
         buffer[i] = '\n';
     }
 }
+
+static const std::unordered_map<Object, char> obj_char_map = {
+    {Object::Empty, 'O'},
+    {Object::Snake, 'S'},
+    {Object::Apple, 'A'}
+};
+
+void Renderer::set_buffer(const std::array<Object, MAP_SIZE> &map) {
+    int row = 0;
+    for(int i=0; i<MAP_SIZE; i++) {
+        buffer[i + row] = obj_char_map.at(map[i]);
+
+        if(i%GAME_SIZE) {
+            row++;
+        }
+    }
+}
+
+void Renderer::print_buffer() {
+    std::cout << buffer;
+}

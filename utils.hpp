@@ -17,4 +17,6 @@ namespace utils {
     int get_random_int(int min, int max);
 
     Direction get_opposite_direction(Direction dir);
+
+    
 }

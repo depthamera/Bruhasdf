@@ -15,6 +15,8 @@ class Manager {
     Key current_input = Key::None;
     static const std::unordered_map<Key, Direction> key_dir_map;
 
+    Renderer renderer;
+
     void loop();
 public:
     Manager();

@@ -1,6 +1,6 @@
 #include "manager.hpp"
 
-Manager::Manager(): game(Game()) {
+Manager::Manager(): game(Game()), renderer(Renderer()) {
 
 }
 
@@ -24,6 +24,8 @@ void Manager::loop() {
             game.try_set_snake_direction(key_dir_map.at(current_input));
             game.update();
             
+            renderer.set_buffer(game.get_map());
+            renderer.print_buffer();
             tick_counter = 0;
         }
     }

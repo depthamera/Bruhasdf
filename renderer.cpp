@@ -35,5 +35,6 @@ void Renderer::set_buffer(const std::array<Object, MAP_SIZE> &map) {
 }
 
 void Renderer::print_buffer() {
+    system("clear");
     std::cout << buffer;
 }

@@ -30,4 +30,5 @@ public:
     void update();
     void generate_apple();
     void try_set_snake_direction(Direction dir);
+    std::array<Object, MAP_SIZE> get_map();
 };

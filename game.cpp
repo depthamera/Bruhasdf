@@ -21,3 +21,6 @@ void Game::try_set_snake_direction(Direction dir) {
     snake_dir = dir;
 }
 
+std::array<Object, MAP_SIZE> Game::get_map() {
+    return map;
+}

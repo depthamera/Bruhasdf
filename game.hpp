@@ -2,6 +2,7 @@
 #include <vector>
 #include <array>
 #include <random>
+#include <unordered_map>
 #include "utils.hpp"
 
 enum class Direction { None, Up, Down, Left, Right };
@@ -14,6 +15,7 @@ class Game {
 
     int snake_length = 1;
     Direction snake_dir = Direction::Right;
+    static const std::unordered_map<Direction, int> dir_int_map;
 
     std::vector<int> snake_pos;
     int apple_pos = -1;
@@ -24,11 +26,14 @@ class Game {
     std::random_device random_device;
     std::mt19937 random_generator;
 
+    void initialize();
+    void generate_apple();
+    bool try_move_snake();
+    int get_next_position();
+    bool is_valid_movement(int target);
 public:
     Game();
-    void initialize();
     void update();
-    void generate_apple();
-    void try_set_snake_direction(Direction dir);
+    bool try_set_snake_direction(Direction dir);
     std::array<Object, MAP_SIZE> get_map();
 };

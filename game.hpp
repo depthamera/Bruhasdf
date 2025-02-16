@@ -3,7 +3,9 @@
 #include <array>
 #include <random>
 #include <unordered_map>
+#include <unordered_set>
 #include "utils.hpp"
+#include "manager.hpp"
 
 enum class Direction { None, Up, Down, Left, Right };
 enum class Object { Empty, Snake, Apple };
@@ -23,11 +25,9 @@ class Game {
 
     std::array<Object, MAP_SIZE> map;
 
-    std::random_device random_device;
-    std::mt19937 random_generator;
-
     void initialize();
     void generate_apple();
+    void eat_apple();
     bool try_move_snake();
     int get_next_position();
     bool is_valid_movement(int target);

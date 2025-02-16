@@ -18,7 +18,14 @@ class Manager {
     Renderer renderer;
 
     void loop();
+
 public:
-    Manager();
+
+    static Manager& get_instance() {
+        static Manager instance;
+        return instance;
+    }
+
     void start_game();
+    void stop_game();
 };

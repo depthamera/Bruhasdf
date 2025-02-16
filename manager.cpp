@@ -9,6 +9,10 @@ void Manager::start_game() {
     loop();
 }
 
+void Manager::stop_game() {
+    is_game_running = false;
+}
+
 const std::unordered_map<Key, Direction> Manager::key_dir_map = {
     {Key::Up, Direction::Up},
     {Key::Down, Direction::Down},

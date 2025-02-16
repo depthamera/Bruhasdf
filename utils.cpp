@@ -1,6 +1,8 @@
 #include "utils.hpp"
 
-int utils::get_random_int(const int& min, const int& max, const std::mt19937& generator) {
+int utils::get_random_int(const int& min, const int& max) {
+    static std::random_device random_device;
+    static std::mt19937 generator(random_device());
     return std::uniform_int_distribution<int>{min, max}(generator);
 }
 
